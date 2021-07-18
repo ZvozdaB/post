@@ -21,10 +21,10 @@ code {
 }
 .post{
   
-  background-color: rgb(168, 163, 163);
+  background-color: rgb(233, 233, 233);
   border-radius: 10px;
   color: #000;
-  padding: 5px;
+  padding: 10px;
   display: grid;
   grid-template-rows: 50% 50%;
   position: relative;
