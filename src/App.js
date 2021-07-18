@@ -1,24 +1,55 @@
-import logo from './logo.svg';
-import './App.css';
+import React,{useState,useEffect} from "react";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 
 function App() {
+
+  const [post,setPost] = useState([]);
+
+  const getData = async () => {
+    const response = await fetch('https://jsonplaceholder.typicode.com/posts');
+    const body = await response.json()
+    return body
+  }
+  useEffect(() => {getData().then(resp => setPost(resp))},[])
+
+
+  
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Switch>
+        {post.map((item, index, arr) => {
+          return (<Route path={"/post" + item.id} key={index}>
+            <div className="article">
+              <nav className="article__nav" >
+                <Link className="article__link" to={(item.id !== 1) ? "/post" + (item.id - 1) : "/"}><span>&lt;</span> Previous</Link>
+                <Link className="article__link" to="/">Home</Link>
+                <Link className="article__link" to={(arr.length !== item.id) ? "/post" + (item.id + 1) : "/"}>Next <span>&gt;</span></Link>
+              </nav>
+              <div className="article__title">{item.title}</div>
+              <div className="article__text">{item.body}</div>  
+            </div>
+            </Route>)
+            })}  
+        <Route path="/">
+          <div className="wrapper">
+            {post.map((item, index) => {
+              return <div className="post" key={index}>
+                <div className="post_titel">{(item.title.length > 50) ? item.title.slice(0, 50) + "..." : item.title}</div>
+                <div className="post_body">{(item.body.length > 100) ? item.body.slice(0, 120) + "..." : item.body}</div>
+                <Link to={"/post" + item.id} className="link"></Link>
+              </div>
+            })}
+          </div>
+        </Route>  
+      </Switch>
+    </Router>
+    
   );
 }
 
