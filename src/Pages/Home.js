@@ -7,10 +7,7 @@ import "./Home.css"
 
 function Home(){
     const [post, setPost] = useState([]);
-
-    const url = 'https://jsonplaceholder.typicode.com/posts/';
-    
-    useEffect(() => { getData(url).then(resp => setPost(resp)) }, [])
+    useEffect(() => { getData().then(resp => setPost(resp)) }, [])
 
 
     return (
